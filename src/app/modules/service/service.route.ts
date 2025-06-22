@@ -4,7 +4,6 @@ import auth from '../../middlewares/auth';
 import { ServiceValidationSchema } from './service.validaction';
 import fileUploadHandler from '../../middlewares/fileUploadHandler';
 import { ServiceController } from './service.controller';
-import validateRequest from '../../middlewares/validateRequest';
 
 const router = express.Router();
 
@@ -44,22 +43,12 @@ router.patch(
   }
 );
 
-// Rate a service
-router.patch(
-  '/:serviceId/rating',
-  validateRequest(ServiceValidationSchema.giveRating),
-  ServiceController.giveRating
-);
-
 // Delete a service by ID
 router.delete(
   '/:serviceId',
   auth(USER_ROLES.PROVIDER),
   ServiceController.deleteService
 );
-
-
-
 
 // Admin Routes
 // Mark or unmark a service as trending

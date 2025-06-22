@@ -2,6 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import ApiError from '../../../errors/ApiError';
 import { BookingModel } from './bookings.model';
 import { TBooking } from './bookings.interfacet';
+import { JwtPayload } from 'jsonwebtoken';
 
 // ✅ Create a new Booking
 const createBooking = async (payload: TBooking) => {

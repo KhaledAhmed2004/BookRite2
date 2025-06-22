@@ -2,6 +2,8 @@ import express from 'express';
 import { FaqController } from './faq.controller';
 import { FaqValidationZodSchema } from './faq.validation';
 import validateRequest from '../../middlewares/validateRequest';
+import auth from '../../middlewares/auth';
+import { USER_ROLES } from '../../../enums/user';
 
 const router = express.Router();
 
@@ -14,6 +16,7 @@ router.get('/:faqId', FaqController.getSingleFaq);
 // ✅ Admin - Create a new FAQ
 router.post(
   '/',
+  auth(USER_ROLES.SUPER_ADMIN),
   validateRequest(FaqValidationZodSchema.createFaq),
   FaqController.createFaq
 );

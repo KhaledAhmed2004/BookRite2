@@ -8,9 +8,11 @@ import { getSingleFilePath } from '../../../shared/getFilePath';
 // Create a new portfolio
 const createPortfolio = catchAsync(async (req: Request, res: Response) => {
   const img = getSingleFilePath(req.files, 'image');
+  const { id } = req.user;
   const data = {
     img,
     ...req.body,
+    provider: id,
   };
   const result = await PortfolioService.createPortfolio(data);
   sendResponse(res, {

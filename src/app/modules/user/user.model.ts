@@ -15,6 +15,7 @@ const userSchema = new Schema<IUser, UserModal>(
     phone_number: {
       type: String,
       unique: true, // Ensure unique phone numbers
+      sparse: true, // ✅ This allows multiple null/undefined values
     },
     role: {
       type: String,
@@ -52,7 +53,6 @@ const userSchema = new Schema<IUser, UserModal>(
     },
     address: {
       type: String,
-      default: '',
     },
     gender: {
       type: String,

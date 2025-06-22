@@ -4,10 +4,16 @@ import sendResponse from '../../../shared/sendResponse';
 import { StatusCodes } from 'http-status-codes';
 import { BookingService } from './bookings.service';
 
-// ✅ Create a new Booking
 const createBooking = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const result = await BookingService.createBooking(req.body);
+    const userId = req.user.id;
+
+    const data = {
+      ...req.body,
+      userId,
+    };
+
+    const result = await BookingService.createBooking(data);
 
     sendResponse(res, {
       success: true,
@@ -18,7 +24,7 @@ const createBooking = catchAsync(
   }
 );
 
-// ✅ Get all Bookings (admin)
+// ✅ Get all Bookings
 const getAllBookings = catchAsync(async (req: Request, res: Response) => {
   const result = await BookingService.getAllBookings();
 

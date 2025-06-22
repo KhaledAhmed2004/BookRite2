@@ -65,6 +65,21 @@ const updateProfileToDB = async (
     throw new ApiError(StatusCodes.BAD_REQUEST, "User doesn't exist!");
   }
 
+  // 2️⃣ Check for phone number conflict
+  if (payload.phone_number) {
+    const existingUser = await User.findOne({
+      phone_number: payload.phone_number,
+      _id: { $ne: id }, // exclude the current user
+    });
+
+    if (existingUser) {
+      throw new ApiError(
+        StatusCodes.CONFLICT,
+        'Phone number already in use by another user'
+      );
+    }
+  }
+
   //unlink file here
   if (payload.profile_picture) {
     unlinkFile(isExistUser.profile_picture);

@@ -11,6 +11,7 @@ const router = express.Router();
 router.post(
   '/create',
   fileUploadHandler(),
+  auth(USER_ROLES.PROVIDER),
   (req: Request, res: Response, next: NextFunction) => {
     if (req.body.data) {
       req.body = PortfolioValidationSchema.createService.parse(
@@ -30,6 +31,7 @@ router.get('/:portfolioId', PortfolioController.getSinglePortfolio);
 // Update a portfolio by ID
 router.patch(
   '/:portfolioId',
+  auth(USER_ROLES.PROVIDER),
   fileUploadHandler(),
   (req: Request, res: Response, next: NextFunction) => {
     if (req.body.data) {

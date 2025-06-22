@@ -8,11 +8,12 @@ import { FaqRoutes } from '../app/modules/faq/faq.route';
 import { RatingRoutes } from '../app/modules/rating/rating.route';
 import { BookmarkRoutes } from '../app/modules/bookmark/bookmark.route';
 import { PortfolioRoutes } from '../app/modules/portfolio/portfolio.route';
+import { BookingRoutes } from '../app/modules/bookings/bookings.route';
 const router = express.Router();
 
 const apiRoutes = [
   {
-    path: '/user',
+    path: '/users',
     route: UserRoutes,
   },
   {
@@ -44,8 +45,12 @@ const apiRoutes = [
     route: BookmarkRoutes,
   },
   {
-    path: '/portfolio',
+    path: '/portfolios',
     route: PortfolioRoutes,
+  },
+  {
+    path: '/bookings',
+    route: BookingRoutes,
   },
 ];
 

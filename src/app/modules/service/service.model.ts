@@ -37,8 +37,8 @@ const ServiceSchema = new Schema(
     },
     bookedSlotes: [
       {
-        date: string,
-        timeSlot: string,
+        date: String,
+        timeSlot: String,
       },
     ],
     is_trending: {

@@ -7,10 +7,12 @@ import { ServiceCategoryService } from './serviceCategory.service';
 
 // Create a new service category
 const createServiceCategory = catchAsync(
-
   async (req: Request, res: Response, next: NextFunction) => {
-    console.log('saervice caterry hit contoler')
+    console.log('saervice caterry hit contoler');
     const img = getSingleFilePath(req.files, 'image');
+    console.log(req.files); // check if image exists
+    console.log(img); // check final path
+
     const data = {
       img,
       ...req.body,
@@ -58,8 +60,18 @@ const getSingleServiceCategory = catchAsync(
 const updateServiceCategory = catchAsync(
   async (req: Request, res: Response) => {
     const { categoryId } = req.params;
-    const data = req.body;
-    const result = await ServiceCategoryService.updateServiceCategory(categoryId, data);
+
+    const img = getSingleFilePath(req.files, 'image');
+
+    const data = {
+      img,
+      ...req.body,
+    };
+
+    const result = await ServiceCategoryService.updateServiceCategory(
+      categoryId,
+      data
+    );
 
     sendResponse(res, {
       success: true,
