@@ -1,5 +1,4 @@
 import { model, Schema } from 'mongoose';
-import { string } from 'zod';
 
 const ServiceSchema = new Schema(
   {
@@ -57,6 +56,12 @@ const ServiceSchema = new Schema(
       type: Number,
       default: 0,
     },
+    ratings: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Rating', // 👈 Reference to the Rating model
+      },
+    ],
   },
   {
     timestamps: true,

@@ -6,7 +6,7 @@ import { BookmarkController } from './bookmark.controller';
 const router = express.Router();
 
 // Create a bookmark
-router.post('/', auth(USER_ROLES.USER), BookmarkController.createBookmark);
+router.post('/:id', auth(USER_ROLES.USER), BookmarkController.createBookmark);
 
 // Get all bookmarks
 router.get('/', auth(USER_ROLES.USER), BookmarkController.getAllBookmarks);

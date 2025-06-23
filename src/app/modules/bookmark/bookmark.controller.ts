@@ -6,8 +6,8 @@ import { BookmarkService } from './bookmark.service';
 
 // Create bookmark
 const createBookmark = catchAsync(async (req: Request, res: Response) => {
-  const userId = req.user._id;
-  const serviceId = req.params.serviceId;
+  const userId = req.user.id;
+  const serviceId = req.params.id; // ✅ Fix: changed from serviceId to id
 
   const result = await BookmarkService.createBookmark(userId, serviceId);
 
@@ -21,7 +21,7 @@ const createBookmark = catchAsync(async (req: Request, res: Response) => {
 
 // Get all bookmarks
 const getAllBookmarks = catchAsync(async (req: Request, res: Response) => {
-  const userId = req.user._id;
+  const userId = req.user.id;
 
   const result = await BookmarkService.getAllBookmarks(userId);
 
@@ -35,8 +35,8 @@ const getAllBookmarks = catchAsync(async (req: Request, res: Response) => {
 
 // Delete bookmark
 const deleteBookmark = catchAsync(async (req: Request, res: Response) => {
-  const userId = req.user._id;
-  const serviceId = req.params.serviceId;
+  const userId = req.user.id;
+  const serviceId = req.params.id;
 
   const result = await BookmarkService.deleteBookmark(userId, serviceId);
 

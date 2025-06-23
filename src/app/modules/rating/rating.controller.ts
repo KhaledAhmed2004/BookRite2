@@ -6,7 +6,7 @@ import { RatingService } from './rating.service';
 
 const createRating = catchAsync(async (req: Request, res: Response) => {
   const { serviceId } = req.params;
-  const userId = req.user.userId;
+  const userId = req.user.id;
   const { rating, comment } = req.body;
 
   const result = await RatingService.createRating(serviceId, userId, rating, comment);

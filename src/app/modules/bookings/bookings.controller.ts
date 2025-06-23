@@ -75,6 +75,40 @@ const deleteBooking = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+// 👉 Accept a booking (status → confirmed)
+const acceptBooking = catchAsync(async (req: Request, res: Response) => {
+  const { bookingId } = req.params;
+
+  const result = await BookingService.changeBookingStatus(
+    bookingId,
+    'confirmed'
+  );
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Booking confirmed successfully',
+    data: result,
+  });
+});
+
+// 👉 Reject a booking (status → cancelled)
+const rejectBooking = catchAsync(async (req: Request, res: Response) => {
+  const { bookingId } = req.params;
+
+  const result = await BookingService.changeBookingStatus(
+    bookingId,
+    'cancelled'
+  );
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Booking cancelled successfully',
+    data: result,
+  });
+});
+
 // ✅ Export all Booking handlers
 export const BookingController = {
   createBooking,
@@ -82,4 +116,6 @@ export const BookingController = {
   getSingleBooking,
   updateBooking,
   deleteBooking,
+  acceptBooking,
+  rejectBooking,
 };

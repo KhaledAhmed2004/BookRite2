@@ -29,12 +29,20 @@ const createRating = async (
     await existingRating.save();
   } else {
     // 4️⃣ Create new rating
-    await RatingModel.create({
+    const newRating = await RatingModel.create({
       service: serviceId,
       user: userId,
       rating: ratingValue,
       comment,
     });
+
+    // ✅ Push and SAVE service after pushing rating ID
+    // ✅ Only push if not already in the array
+    if (!service.ratings.includes(newRating._id)) {
+      service.ratings.push(newRating._id);
+    }
+
+    await service.save(); // ✅ Save right after pushing
   }
 
   // 5️⃣ Get all ratings for this service

@@ -6,7 +6,7 @@ import { RatingController } from './rating.controller';
 import { RatingValidationZodSchema } from './rating.validation';
 
 const router = express.Router();
-
+// create
 router.post(
   '/:serviceId',
   auth(USER_ROLES.USER),
