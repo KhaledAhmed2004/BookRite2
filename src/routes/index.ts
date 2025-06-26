@@ -10,6 +10,9 @@ import { BookmarkRoutes } from '../app/modules/bookmark/bookmark.route';
 import { PortfolioRoutes } from '../app/modules/portfolio/portfolio.route';
 import { BookingRoutes } from '../app/modules/bookings/bookings.route';
 import { PaymentRoute } from '../app/modules/payment/payment.route';
+import { ChatRoutes } from '../app/modules/chat/chat.route';
+import { MessageRoutes } from '../app/modules/massage/massage.route';
+import { NotificationRoutes } from '../app/modules/notification/notification.route';
 const router = express.Router();
 
 const apiRoutes = [
@@ -56,6 +59,18 @@ const apiRoutes = [
   {
     path: '/payments',
     route: PaymentRoute,
+  },
+  {
+    path: '/chat',
+    route: ChatRoutes,
+  },
+  {
+    path: '/message',
+    route: MessageRoutes,
+  },
+  {
+    path: '/notifications',
+    route: NotificationRoutes,
   },
 ];
 
