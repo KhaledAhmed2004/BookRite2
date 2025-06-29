@@ -17,9 +17,7 @@ paths:
       tags:
         - Banners
       summary: Get all banners
-      description: |
-        Retrieve all banners from the database.
-        Return a list of banners with _id, image_url, is_active, and timestamps.
+      description: Retrieve all banners from the database.
       responses:
         "200":
           description: A list of banners.
@@ -43,25 +41,32 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Response"
-              example:
-                success: false
-                statusCode: 404
-                message: "No banners found"
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  statusCode:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: "No banners found"
 
     post:
       tags:
         - Banners
       summary: Add a new banner with image upload
       description: |
-        Adds a new banner.  
+        Adds a new banner with an image file upload.
+
         Business Logic:
-        1. Check if user is Admin.  
-        2. Parse multipart/form-data for file upload.  
-        3. Validate file type (.jpg, .jpeg, .png).  
-        4. Save uploaded file to /uploads/image/.  
-        5. Store file path as image_url in DB.  
-        6. Set is_active to true if not provided.
+        1. User must be Admin (authorization required).
+        2. Request must be multipart/form-data with image file.
+        3. File type must be one of .jpg, .jpeg, or .png.
+        4. Uploaded image stored under /uploads/image/, and URL saved as `image` in DB.
+        5. `is_active` is default true.
+        6. `isDeleted` is default false (handling soft delete).
       security:
         - bearerAuth: []
       requestBody:
@@ -104,32 +109,29 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Response"
-              examples:
-                invalidType:
-                  value:
-                    success: false
-                    statusCode: 400
-                    message: "Only .jpeg, .png, .jpg file supported"
-                missingFile:
-                  value:
-                    success: false
-                    statusCode: 400
-                    message: "File is not supported"
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  statusCode:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+                    example: "Only .jpeg, .png, .jpg files supported"
 
   /api/v1/banners/{id}:
     get:
       tags:
         - Banners
       summary: Get a single banner by ID
-      description: |
-        Retrieve banner by _id from database.
-        Return banner details or 404 if not found.
+      description: Retrieve banner by its ID from the database.
       parameters:
         - name: id
           in: path
           required: true
-          description: Banner ID (ObjectId)
+          description: Banner ID (MongoDB ObjectId)
           schema:
             type: string
       responses:
@@ -153,29 +155,37 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Response"
-              example:
-                success: false
-                statusCode: 404
-                message: Banner not found
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  statusCode:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: "Banner not found"
 
     patch:
       tags:
         - Banners
       summary: Update a banner by ID
       description: |
-        Update banner's image_url and/or is_active.
+        Update banner's image URL and/or active status.
+
         Business Logic:
-        1. Verify Admin user.
-        2. Ensure banner exists.
-        3. Update and return updated banner.
+        1. User must be Admin (authorization required).
+        2. Banner must exist.
+        3. If image is updated, old image file is deleted.
+        4. Returns updated banner.
       security:
         - bearerAuth: []
       parameters:
         - name: id
           in: path
           required: true
-          description: Banner ID (ObjectId)
+          description: Banner ID (MongoDB ObjectId)
           schema:
             type: string
       requestBody:
@@ -185,9 +195,10 @@ paths:
             schema:
               type: object
               properties:
-                image_url:
+                image:
                   type: string
                   description: New image URL
+                  example: "https://example.com/newbanner.jpg"
                 is_active:
                   type: boolean
                   description: Banner active status
@@ -215,29 +226,36 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Response"
-              example:
-                success: false
-                statusCode: 404
-                message: Banner not found or failed to update
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  statusCode:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: "Banner not found or failed to update"
 
     delete:
       tags:
         - Banners
       summary: Delete a banner by ID
       description: |
-        Delete banner by _id.
+        Delete banner by its ID.
+
         Business Logic:
-        1. Verify Admin user.
-        2. Ensure banner exists.
-        3. Delete and return success message.
+        1. User must be Admin (authorization required).
+        2. Banner must exist.
+        3. Deletes banner and associated image file.
       security:
         - bearerAuth: []
       parameters:
         - name: id
           in: path
           required: true
-          description: Banner ID (ObjectId)
+          description: Banner ID (MongoDB ObjectId)
           schema:
             type: string
       responses:
@@ -262,11 +280,17 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Response"
-              example:
-                success: false
-                statusCode: 404
-                message: Banner not found or failed to delete
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  statusCode:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: "Banner not found or failed to delete"
 
 components:
   securitySchemes:
@@ -283,34 +307,26 @@ components:
           type: string
           description: MongoDB ObjectId
           example: "60b8a84e38f2003a26a3e1bb"
-        image_url:
+        image:
           type: string
-          description: URL of the banner image
-          example: "https://example.com/banner1.jpg"
+          format: uri
+          description: URL of the banner image (uploaded and stored by backend)
+          example: "https://example.com/uploads/banner1.jpg"
         is_active:
           type: boolean
           description: Banner active status
           example: true
-        created_at:
+        isDeleted:
+          type: boolean
+          description: Indicates whether the banner is soft-deleted
+          example: false
+        createdAt:
           type: string
           format: date-time
           description: Creation timestamp
-          example: "2025-06-18T12:00:00"
-        updated_at:
+          example: "2025-06-18T12:00:00Z"
+        updatedAt:
           type: string
           format: date-time
           description: Last update timestamp
-          example: "2025-06-18T12:30:00"
-
-    Response:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: false
-        statusCode:
-          type: integer
-          example: 400
-        message:
-          type: string
-          example: Error message details here
+          example: "2025-06-18T12:30:00Z"

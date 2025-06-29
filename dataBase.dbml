@@ -1,0 +1,50 @@
+Enum user_roles {
+  SUPER_ADMIN
+  ADMIN
+  USER
+  PROVIDER
+}
+
+Enum gender {
+  male
+  female
+}
+
+Enum status {
+  active
+  delete
+}
+
+Table users {
+  id objectId [pk, note: 'MongoDB ObjectId']
+  name string [not null]
+  phone_number string [unique, note: 'Unique phone number, sparse allowed']
+  role user_roles [not null]
+  email string [not null, unique, note: 'Stored lowercase']
+  password string [not null, note: 'Excluded from query by default, min length 8']
+  profile_picture string [note: 'Default: https://i.ibb.co/z5YHLV9/profile.png (default URLs not supported in DBML directly)']
+  status status [default: "active"]
+  is_verified boolean [default: false]
+  date_of_birth string
+  address string
+  gender gender
+  is_deleted boolean [default: false]
+  location string
+  authentications object [ref: > authentications_object.isResetPassword]
+  created_at datetime
+  updated_at datetime
+
+  note: 'bookmarks and authentication are embedded or related objects'
+}
+
+Table bookmarks {
+  id string [pk, note: 'MongoDB ObjectId']
+  user_id string [ref: > users.id]
+  service_id string [note: 'Reference to Service model']
+}
+
+Table authentications_object {
+  isResetPassword boolean [default: false]
+  oneTimeCode int
+  expireAt datetime
+}

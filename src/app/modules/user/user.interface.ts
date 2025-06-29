@@ -3,17 +3,16 @@ import { USER_ROLES } from '../../../enums/user';
 
 export type IUser = {
   name: string;
-  role: USER_ROLES;
-  phone_number?: string;
   email: string;
+  role: USER_ROLES;
   password: string;
-  location?: string;
+  phone_number?: string;
   date_of_birth?: string;
-  profile_picture?: string;
-  status: 'active' | 'delete';
-  address?: string;
   gender?: 'male' | 'female';
-  bookmarks?: Types.ObjectId[];
+  address?: string;
+  location?: boolean;
+  profile_picture?: string;
+  status: 'active' | 'blocked';
   is_verified: boolean;
   is_deleted?: boolean;
   authentication?: {

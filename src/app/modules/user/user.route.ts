@@ -43,6 +43,4 @@ router.delete(
   UserController.deleteUser
 );
 
-
-
 export const UserRoutes = router;

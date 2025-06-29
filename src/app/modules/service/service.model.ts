@@ -2,31 +2,18 @@ import { model, Schema } from 'mongoose';
 
 const ServiceSchema = new Schema(
   {
+    category: {
+      type: Schema.Types.ObjectId,
+      ref: 'ServiceCategory',
+      required: true,
+    },
+    image: {
+      type: String,
+      trim: true,
+    },
     name: {
       type: String,
       required: true,
-      trim: true,
-    },
-    category: {
-      type: Schema.Types.ObjectId,
-      ref: 'ServiceCategory', // 👈 Reference to another collection
-      required: true,
-    },
-    status: {
-      type: String,
-      enum: ['active', 'inactive'],
-      default: 'active',
-    },
-    img: {
-      type: String,
-      trim: true,
-    },
-    address: {
-      type: String,
-      trim: true,
-    },
-    description: {
-      type: String,
       trim: true,
     },
     price: {
@@ -34,19 +21,26 @@ const ServiceSchema = new Schema(
       required: true,
       min: 0,
     },
-    bookedSlotes: [
-      {
-        date: String,
-        timeSlot: String,
-      },
-    ],
+    description: {
+      type: String,
+      trim: true,
+    },
+    address: {
+      type: String,
+      trim: true,
+    },
+    status: {
+      type: String,
+      enum: ['active', 'inactive'],
+      default: 'active',
+    },
     is_trending: {
       type: Boolean,
-      default: false, // 👈 Default value can be false
+      default: false,
     },
     is_recommended: {
       type: Boolean,
-      default: false, // 👈 Default value can also be false
+      default: false,
     },
     averageRating: {
       type: Number,
@@ -56,10 +50,16 @@ const ServiceSchema = new Schema(
       type: Number,
       default: 0,
     },
+    bookedSlotes: [
+      {
+        date: String,
+        timeSlot: String,
+      },
+    ],
     ratings: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Rating', // 👈 Reference to the Rating model
+        ref: 'Rating',
       },
     ],
   },

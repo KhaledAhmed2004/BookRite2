@@ -1,4 +1,8 @@
+import { Types } from 'mongoose';
+
 export type TBanner = {
-  image_url: string;
+  _id?: Types.ObjectId;
+  image: string;
   is_active: boolean;
+  isDeleted: boolean;
 };

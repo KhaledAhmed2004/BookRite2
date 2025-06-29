@@ -3,13 +3,17 @@ import { TBanner } from './banner.interface';
 
 const bannerSchema = new Schema<TBanner>(
   {
-    image_url: {
+    image: {
       type: String,
       required: true,
     },
     is_active: {
       type: Boolean,
       default: true,
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
     },
   },
   {
