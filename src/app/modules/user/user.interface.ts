@@ -12,7 +12,7 @@ export type IUser = {
   address?: string;
   location?: boolean;
   profile_picture?: string;
-  status: 'active' | 'blocked';
+  status: 'active' | 'delete';
   is_verified: boolean;
   is_deleted?: boolean;
   authentication?: {

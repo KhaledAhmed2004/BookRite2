@@ -34,7 +34,7 @@ const loginUserFromDB = async (payload: ILoginData) => {
       'Please verify your account, then try to login again'
     );
   }
-
+ 
   // 🧠 Step 3: Check if user is deactivated
   if (isExistUser.status === 'delete') {
     throw new ApiError(
